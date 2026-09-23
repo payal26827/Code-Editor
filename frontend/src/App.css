@@ -1,0 +1,825 @@
+/* =========================================
+   GLOBAL
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================
+   MAIN APP
+========================================= */
+
+.app {
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
+.main-container {
+  width: 100%;
+  flex: 1;
+
+  display: flex;
+  align-items: stretch;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.sidebar {
+  width: 270px;
+  min-width: 270px;
+
+  flex-shrink: 0;
+
+  height: 100%;
+
+  padding: 20px 15px;
+
+  overflow-y: auto;
+
+  border-right: 1px solid #3d3d3d;
+
+  background: #202020;
+}
+
+
+/* =========================================
+   SAVED CODES TITLE
+========================================= */
+
+.saved-title {
+  margin: 0 0 18px 0;
+
+  color: white;
+
+  font-size: 25px;
+
+  font-weight: bold;
+}
+
+
+/* =========================================
+   SAVED CODES LIST
+========================================= */
+
+.saved-codes-list {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+/* =========================================
+   NO SAVED CODES
+========================================= */
+
+.no-codes {
+  color: #aaa;
+
+  font-size: 16px;
+
+  padding: 10px 0;
+}
+
+
+/* =========================================
+   CODE CARD
+========================================= */
+
+.code-card {
+  width: 100%;
+
+  min-height: 78px;
+
+  padding: 13px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  background: #2b2b2b;
+
+  border: 1px solid #444;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    border 0.2s,
+    transform 0.2s;
+}
+
+.code-card:hover {
+  background: #353535;
+
+  border-color: #666;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   SELECTED CODE
+========================================= */
+
+.code-card.selected {
+  background: #303030;
+
+  border: 2px solid #22c55e;
+}
+
+
+/* =========================================
+   CODE CARD INFORMATION
+========================================= */
+
+.code-card-info {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+/* Code Title */
+
+.code-card-info h3 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: bold;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* Language */
+
+.code-card-info span {
+  color: #aaa;
+
+  font-size: 14px;
+
+  text-transform: capitalize;
+}
+
+
+/* =========================================
+   DELETE BUTTON
+========================================= */
+
+.delete-btn {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #3a3a3a;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+
+/* =========================================
+   EDITOR + OUTPUT RIGHT SIDE
+========================================= */
+
+.editor-output-container {
+  flex: 1;
+
+  width: calc(100% - 270px);
+
+  min-width: 0;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  /*
+    IMPORTANT:
+    Right side ko scrollable banata hai.
+  */
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =========================================
+   RIGHT SIDE SCROLLBAR
+========================================= */
+
+.editor-output-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.editor-output-container::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.editor-output-container::-webkit-scrollbar-thumb {
+  background: #666;
+
+  border-radius: 10px;
+}
+
+.editor-output-container::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+
+/* =========================================
+   EDITOR CONTAINER
+========================================= */
+
+.editor-container {
+  width: 100%;
+
+  min-width: 0;
+
+  padding: 20px;
+}
+
+
+/* =========================================
+   EDITOR HEADER
+========================================= */
+
+.editor-header {
+  width: 100%;
+
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 18px;
+
+  background: #303030;
+
+  color: white;
+
+  border: 1px solid #444;
+
+  border-radius: 8px 8px 0 0;
+
+  font-size: 20px;
+
+  font-weight: bold;
+}
+
+
+/* =========================================
+   MONACO EDITOR
+========================================= */
+
+.monaco-container {
+  width: 100% !important;
+
+  /*
+    Editor height reduced so that
+    Output can be reached easily.
+  */
+
+  height: 350px;
+
+  min-width: 0;
+
+  border: 1px solid #444;
+
+  border-top: none;
+
+  border-radius: 0 0 8px 8px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   HTML EDITOR FOR CSS
+========================================= */
+
+.html-side-editor {
+  width: 100%;
+
+  margin-top: 20px;
+}
+
+
+/* =========================================
+   HTML EDITOR HEADER
+========================================= */
+
+.html-editor-header {
+  width: 100%;
+
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 0 18px;
+
+  background: #303030;
+
+  color: white;
+
+  border: 1px solid #444;
+
+  border-radius: 8px 8px 0 0;
+
+  font-size: 20px;
+
+  font-weight: bold;
+}
+
+
+/* =========================================
+   HTML MONACO EDITOR
+========================================= */
+
+.html-monaco-container {
+  width: 100% !important;
+
+  height: 300px;
+
+  border: 1px solid #444;
+
+  border-top: none;
+
+  border-radius: 0 0 8px 8px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   OUTPUT CONTAINER
+========================================= */
+
+.output-container {
+  width: 100%;
+
+  padding: 0 20px 30px;
+}
+
+
+/* =========================================
+   OUTPUT HEADING
+========================================= */
+
+.output-container h3 {
+  margin: 0 0 10px 0;
+
+  font-size: 22px;
+
+  font-weight: bold;
+
+  color: white;
+}
+
+
+/* =========================================
+   NORMAL OUTPUT
+   Java / C / C++ / Python / JavaScript
+========================================= */
+
+.output-console {
+  width: 100%;
+
+  min-height: 220px;
+
+  padding: 18px;
+
+  margin: 0;
+
+  background: #090909;
+
+  color: white;
+
+  border: 1px solid #444;
+
+  border-radius: 8px;
+
+  overflow: auto;
+
+  font-family: Consolas, "Courier New", monospace;
+
+  font-size: 17px;
+
+  line-height: 1.5;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+}
+
+
+/* =========================================
+   HTML / CSS PREVIEW
+========================================= */
+
+.output-frame {
+  width: 100%;
+
+  height: 400px;
+
+  display: block;
+
+  background: white;
+
+  border: 1px solid #444;
+
+  border-radius: 8px;
+}
+
+
+/* =========================================
+   DARK THEME
+========================================= */
+
+.app.dark {
+  background: #1e1e1e;
+
+  color: white;
+}
+
+
+/* =========================================
+   DARK SIDEBAR
+========================================= */
+
+.app.dark .sidebar {
+  background: #202020;
+
+  border-color: #3d3d3d;
+}
+
+
+/* =========================================
+   LIGHT THEME
+========================================= */
+
+.app.light {
+  background: #f5f5f5;
+
+  color: #222;
+}
+
+
+/* =========================================
+   LIGHT SIDEBAR
+========================================= */
+
+.app.light .sidebar {
+  background: white;
+
+  border-color: #ddd;
+}
+
+
+/* Saved Codes */
+
+.app.light .saved-title {
+  color: #222;
+}
+
+
+/* Code Card */
+
+.app.light .code-card {
+  background: #ffffff;
+
+  border-color: #ddd;
+}
+
+
+/* Hover */
+
+.app.light .code-card:hover {
+  background: #f2f2f2;
+
+  border-color: #bbb;
+}
+
+
+/* Selected */
+
+.app.light .code-card.selected {
+  background: #f5f5f5;
+
+  border-color: #22c55e;
+}
+
+
+/* Card Title */
+
+.app.light .code-card-info h3 {
+  color: #222;
+}
+
+
+/* Card Language */
+
+.app.light .code-card-info span {
+  color: #666;
+}
+
+
+/* Delete */
+
+.app.light .delete-btn {
+  background: #eeeeee;
+}
+
+.app.light .delete-btn:hover {
+  background: #dc2626;
+}
+
+
+/* Editor Header */
+
+.app.light .editor-header,
+.app.light .html-editor-header {
+  background: #eeeeee;
+
+  color: #222;
+
+  border-color: #ccc;
+}
+
+
+/* Output Heading */
+
+.app.light .output-container h3 {
+  color: #222;
+}
+
+
+/* Output */
+
+.app.light .output-console {
+  background: white;
+
+  color: #222;
+
+  border-color: #ccc;
+}
+
+
+/* =========================================
+   GENERAL SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 9px;
+
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1200px) {
+
+  .sidebar {
+    width: 250px;
+
+    min-width: 250px;
+  }
+
+  .editor-output-container {
+    width: calc(100% - 250px);
+  }
+}
+
+
+/* =========================================
+   SMALL TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .sidebar {
+    width: 230px;
+
+    min-width: 230px;
+
+    padding: 18px 12px;
+  }
+
+  .editor-output-container {
+    width: calc(100% - 230px);
+  }
+
+  .editor-container {
+    padding: 15px;
+  }
+
+  .output-container {
+    padding: 0 15px 25px;
+  }
+
+  .monaco-container {
+    height: 350px;
+  }
+
+  .html-monaco-container {
+    height: 280px;
+  }
+
+  .saved-title {
+    font-size: 23px;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .sidebar {
+    width: 200px;
+
+    min-width: 200px;
+
+    padding: 15px 10px;
+  }
+
+  .editor-output-container {
+    width: calc(100% - 200px);
+  }
+
+  .editor-container {
+    padding: 10px;
+  }
+
+  .output-container {
+    padding: 0 10px 20px;
+  }
+
+  .monaco-container {
+    height: 320px;
+  }
+
+  .html-monaco-container {
+    height: 260px;
+  }
+
+  .saved-title {
+    font-size: 21px;
+  }
+
+  .code-card {
+    padding: 10px;
+  }
+
+  .code-card-info h3 {
+    font-size: 15px;
+  }
+
+  .code-card-info span {
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .main-container {
+    display: block;
+
+    overflow: visible;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .editor-output-container {
+    width: 100%;
+
+    height: calc(100vh - 70px);
+
+    overflow-y: auto;
+  }
+
+  .editor-container {
+    padding: 10px;
+  }
+
+  .monaco-container {
+    height: 320px;
+  }
+
+  .html-monaco-container {
+    height: 260px;
+  }
+
+  .output-container {
+    padding: 0 10px 20px;
+  }
+
+  .output-console {
+    min-height: 180px;
+
+    font-size: 15px;
+  }
+
+  .output-frame {
+    height: 350px;
+  }
+}
