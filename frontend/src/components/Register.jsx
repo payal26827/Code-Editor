@@ -32,13 +32,13 @@ function Register() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          username: username.trim(),
-          email: email.trim(),
-          password: password,
-        }
-      );
+  "https://code-editor-zgzr.onrender.com/api/auth/register",
+  {
+    username: username.trim(),
+    email: email.trim(),
+    password: password,
+  }
+);
 
       console.log("Register Response:", response.data);
 

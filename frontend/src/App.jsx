@@ -15,11 +15,10 @@ import "./App.css";
 // =====================================================
 
 const RUN_API_URL =
-  "http://localhost:5000/api/run";
+  "https://code-editor-zgzr.onrender.com/api/run";
 
 const CODES_API_URL =
-  "http://localhost:5000/api/codes";
-
+  "https://code-editor-zgzr.onrender.com/api/codes";
 // =====================================================
 // AUTH CONFIG
 // =====================================================

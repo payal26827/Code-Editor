@@ -33,13 +33,13 @@ function Login() {
       // LOGIN API
       // =================================================
 
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        {
-          email: email.trim(),
-          password: password,
-        }
-      );
+     const response = await axios.post(
+  "https://code-editor-zgzr.onrender.com/api/auth/login",
+  {
+    email: email.trim(),
+    password: password,
+  }
+);
 
       console.log("Login Response:", response.data);
 
